@@ -41,7 +41,7 @@
                     <option value="status inactive">Ngừng hoạt động</option>
                 </select>
 
-                <button>+ Thêm mới môn học</button>
+                <a href="#categoryModal" class="btn-add">+ Thêm mới môn học</a>
             </div>
         </div>
             <div class="search-wrapper">
@@ -64,13 +64,12 @@
                         <td>Lập trình C</td>
                         <td><span class="status active">Đang hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -78,13 +77,12 @@
                         <td>Lập trình Frontend với ReactJS</td>
                         <td><span class="status inactive">Ngừng hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -92,13 +90,12 @@
                         <td>Lập trình Backend với Spring boot</td>
                         <td><span class="status active">Đang hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -106,13 +103,12 @@
                         <td>Lập trình Frontend với VueJS</td>
                         <td><span class="status inactive">Ngừng hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -120,13 +116,12 @@
                         <td>Cấu trúc dữ liệu và giải thuật</td>
                         <td><span class="status inactive">Ngừng hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -134,13 +129,12 @@
                         <td>Phân tích và thiết kế hệ thống</td>
                         <td><span class="status inactive">Ngừng hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -148,13 +142,12 @@
                         <td>Toán cao cấp</td>
                         <td><span class="status active">Đang hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
 
@@ -162,13 +155,12 @@
                         <td>Tiếng Anh chuyên ngành</td>
                         <td><span class="status inactive">Ngừng hoạt động</span></td>
                         <td>
-                            <button class="icon-btn">
+                            <a href="#deleteModal" class="icon-btn">
                                 <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </button>
-
-                            <button class="icons-btn">
+                            </a>
+                            <a href="#editModal" class="icons-btn">
                                 <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -178,33 +170,62 @@
     </div>
 
     <div class="modal-overlay" id="categoryModal">
+        <a href="#" class="modal-backdrop-close"></a>
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Thêm mới môn học</h3>
-                <span class="close-btn" onclick="closeModal('categoryModal')">&times;</span>
+                <h3>Thêm mới môn học</h3>
+                <a href="#" class="close-btn">&times;</a>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Tên môn học</label>
-                    <input type="text" id="categoryName" placeholder="Nhập tên môn học">
+                    <input type="text" id="categoryName" placeholder="Nhập tên môn học" required>
                     <span class="error-message">Tên môn học không được để trống</span>
                 </div>
                 <div class="form-group">
                     <label>Trạng thái</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="status" value="active" checked> Đang hoạt động</label>
-                        <label><input type="radio" name="status" value="inactive"> Ngừng hoạt động</label>
+                        <label><input type="radio" name="statusAdd" value="active" checked> Đang hoạt động</label>
+                        <label><input type="radio" name="statusAdd" value="inactive"> Ngừng hoạt động</label>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal('categoryModal')">Hủy</button>
-                <button class="btn-submit" id="btnSave">Thêm</button>
+                <a href="#" class="btn-cancel">Hủy</a>
+                <button class="btn-submit">Thêm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="editModal">
+        <a href="#" class="modal-backdrop-close"></a>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sửa môn học</h3>
+                <a href="#" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên môn học</label>
+                    <input type="text" id="editCategoryName" placeholder="Nhập tên môn học">
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="statusEdit" value="active" checked> Đang hoạt động</label>
+                        <label><input type="radio" name="statusEdit" value="inactive"> Ngừng hoạt động</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn-cancel">Hủy</a>
+                <button class="btn-submit">Lưu thay đổi</button>
             </div>
         </div>
     </div>
 
     <div class="modal-overlay" id="deleteModal">
+        <a href="#" class="modal-backdrop-close"></a>
         <div class="modal-content modal-sm">
             <div class="modal-body text-center">
                 <div class="delete-icon">🗑️</div>
@@ -212,7 +233,7 @@
                 <p>Bạn có chắc chắn muốn xóa môn học này không? Hành động này không thể hoàn tác.</p>
             </div>
             <div class="modal-footer flex-center">
-                <button class="btn-cancel" onclick="closeModal('deleteModal')">Hủy bỏ</button>
+                <a href="#" class="btn-cancel">Hủy bỏ</a>
                 <button class="btn-danger">Xác nhận xóa</button>
             </div>
         </div>
