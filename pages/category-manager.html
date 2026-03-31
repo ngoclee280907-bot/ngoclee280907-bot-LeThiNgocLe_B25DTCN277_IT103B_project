@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý môn học</title>
+    <link rel="stylesheet" href="../css/category-manager.css" />
+</head>
+<body>
+    <div class="layout">
+
+        <div class="sidebar">
+            <h2>📚 Study Tracker</h2>
+            <p>Quản lý tiến độ học tập</p>
+
+            <ul>
+                <li>
+                    <img src="/assets/images/Vector 4.png" alt="" class="nav-icon">
+                    Thống kê
+                </li>
+                <li class="active">
+                    <img src="/assets/images/Vector 2.png" alt="" class="nav-icon">
+                    Quản lý môn học
+                </li>
+                <li>
+                    <img src="/assets/images/Vector (1).png" alt="" class="nav-icon">
+                    Quản lý bài học
+                </li>
+            </ul>
+        </div>
+
+        <div class="main">
+
+            <div class="header">
+            <h1>Môn học</h1>
+
+            <div class="header-right">
+                <select>
+                    <option value="">Lọc theo trạng thái</option>
+                    <option value="active">Đang hoạt động</option>
+                    <option value="status inactive">Ngừng hoạt động</option>
+                </select>
+
+                <button>+ Thêm mới môn học</button>
+            </div>
+        </div>
+            <div class="search-wrapper">
+                <div class="search-box">
+                    <input type="text" placeholder="Tìm kiếm môn học theo tên...">
+                    <img src="/assets/images/Shape.png" alt="Tìm kiếm" class="search-icon">
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tên môn học</th>
+                        <th>Trạng thái</th>
+                        <th>Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Lập trình C</td>
+                        <td><span class="status active">Đang hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Lập trình Frontend với ReactJS</td>
+                        <td><span class="status inactive">Ngừng hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Lập trình Backend với Spring boot</td>
+                        <td><span class="status active">Đang hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Lập trình Frontend với VueJS</td>
+                        <td><span class="status inactive">Ngừng hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cấu trúc dữ liệu và giải thuật</td>
+                        <td><span class="status inactive">Ngừng hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Phân tích và thiết kế hệ thống</td>
+                        <td><span class="status inactive">Ngừng hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Toán cao cấp</td>
+                        <td><span class="status active">Đang hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Tiếng Anh chuyên ngành</td>
+                        <td><span class="status inactive">Ngừng hoạt động</span></td>
+                        <td>
+                            <button class="icon-btn">
+                                <img src="../assets/images/trash-2.png" alt="Xóa">
+                            </button>
+
+                            <button class="icons-btn">
+                                <img src="../assets/images/_Button base.png" alt="Sửa">
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Thêm mới môn học</h3>
+                <span class="close-btn" onclick="closeModal('categoryModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên môn học</label>
+                    <input type="text" id="categoryName" placeholder="Nhập tên môn học">
+                    <span class="error-message">Tên môn học không được để trống</span>
+                </div>
+                <div class="form-group">
+                    <label>Trạng thái</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="active" checked> Đang hoạt động</label>
+                        <label><input type="radio" name="status" value="inactive"> Ngừng hoạt động</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeModal('categoryModal')">Hủy</button>
+                <button class="btn-submit" id="btnSave">Thêm</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-content modal-sm">
+            <div class="modal-body text-center">
+                <div class="delete-icon">🗑️</div>
+                <h3>Xác nhận xóa?</h3>
+                <p>Bạn có chắc chắn muốn xóa môn học này không? Hành động này không thể hoàn tác.</p>
+            </div>
+            <div class="modal-footer flex-center">
+                <button class="btn-cancel" onclick="closeModal('deleteModal')">Hủy bỏ</button>
+                <button class="btn-danger">Xác nhận xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <button class="page-btn">&lt;</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">...</button>
+        <button class="page-btn">20</button>
+        <button class="page-btn">&gt;</button>
+    </div>
+
+    <script src="../js/category-manager.js"></script>
+</body>
+</html>
