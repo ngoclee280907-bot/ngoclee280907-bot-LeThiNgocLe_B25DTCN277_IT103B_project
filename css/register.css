@@ -101,7 +101,6 @@ input {
   text-decoration: none;
 }
 
-/* Validation Styles */
 .error-message {
     color: #ef4444;
     font-size: 12px;
@@ -131,7 +130,6 @@ input {
     display: block;
 }
 
-/* Toast Notification Styles */
 .toast-container {
     position: fixed;
     top: 24px;

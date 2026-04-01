@@ -219,20 +219,26 @@ td {
     border: none;         
     outline: none;       
     background: none;    
-    padding: 0;
-    margin-right: 15px !important;
+    padding: 6px;
+    margin-right: 8px;
     display: inline-flex;
     align-items: center;
     text-decoration: none;
+    border-radius: 4px;
+    transition: 0.2s;
 }
 
-.icons-btn img {
-    width: 25px !important; 
-    height: 25px !important;
+.icon-btn:hover, .icons-btn:hover {
+    background-color: #f1f5f9;
+}
+
+.icon-btn img, .icons-btn img {
+    width: 20px !important; 
+    height: 20px !important;
 }
 
 .icons-btn {
-    padding: 0 !important;
+    padding: 6px;
     outline: none;
 }
 
@@ -411,7 +417,6 @@ th::after {
     margin-bottom: 10px;
 }
 
-/* Delete Modal Specific Styles */
 .delete-modal-box {
     padding: 0;
     width: 480px;
@@ -460,7 +465,6 @@ th::after {
     background: #DC2626;
 }
 
-/* Toast Notification Styles */
 .toast-container {
     position: fixed;
     top: 24px;

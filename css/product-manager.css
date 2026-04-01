@@ -375,7 +375,6 @@ input[type="checkbox"]:focus {
     color: #94a3b8;
 }
 
-/* Modal Styling */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -456,7 +455,6 @@ input[type="checkbox"]:focus {
     border-color: #3b82f6;
 }
 
-/* Validation styles */
 .form-group.error input, .form-group.error select {
     border-color: #ef4444;
 }
@@ -503,7 +501,6 @@ input[type="checkbox"]:focus {
     background: #3b82f6;
 }
 
-/* Delete Modal Specific Styles */
 .delete-modal-box {
     padding: 0;
     width: 450px;
@@ -563,7 +560,6 @@ input[type="checkbox"]:focus {
     cursor: pointer;
 }
 
-/* Toast Notification Styles */
 .toast-container {
     position: fixed;
     top: 24px;

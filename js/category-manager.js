@@ -1,18 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
     const toastContainer = document.getElementById('toast-container');
+    const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
 
-    if (deleteConfirmBtn) {
-        deleteConfirmBtn.addEventListener('click', () => {
-            // Close the modal by changing the hash
-            window.location.hash = '#';
+    const hideToast = (toast) => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    };
 
-            // Show success toast
-            showToast('Thành công', 'Xóa bài học thành công');
-        });
-    }
-
-    function showToast(title, message) {
+    const showToast = (title, message, duration = 3000) => {
         const toast = document.createElement('div');
         toast.className = 'toast';
         
@@ -26,32 +25,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="toast-title">${title}</div>
                 <div class="toast-message">${message}</div>
             </div>
-            <div class="toast-close">
-                &times;
-            </div>
+            <div class="toast-close">&times;</div>
         `;
 
         toastContainer.appendChild(toast);
 
-        // Add auto-close functionality
-        const autoCloseTimeout = setTimeout(() => {
-            closeToast(toast);
-        }, 3000);
+        const autoHide = setTimeout(() => hideToast(toast), duration);
 
-        // Manual close button
-        const closeBtn = toast.querySelector('.toast-close');
-        closeBtn.addEventListener('click', () => {
-            clearTimeout(autoCloseTimeout);
-            closeToast(toast);
-        });
-    }
+        toast.querySelector('.toast-close').onclick = () => {
+            clearTimeout(autoHide);
+            hideToast(toast);
+        };
+    };
 
-    function closeToast(toast) {
-        toast.classList.add('hide');
-        setTimeout(() => {
-            if (toast.parentNode) {
-                toast.parentNode.removeChild(toast);
-            }
-        }, 300); // Wait for transition animation
+    if (deleteConfirmBtn) {
+        deleteConfirmBtn.onclick = () => {
+            window.location.hash = '#';
+            showToast('Thành công', 'Xóa bài học thành công');
+        };
     }
 });

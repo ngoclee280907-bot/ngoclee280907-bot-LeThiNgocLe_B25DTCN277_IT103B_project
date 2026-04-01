@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const toastContainer = document.getElementById('toast-container');
 
-    // 1. Link logic for Edit buttons
     const editBtns = document.querySelectorAll('.edit-btn');
     editBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -9,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 2. Link logic for Delete buttons
     const deleteBtns = document.querySelectorAll('.delete-btn');
     deleteBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -17,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. Logic for Cancel buttons in modals
     const cancelBtns = document.querySelectorAll('.btn-cancel-modal, .close-btn, .modal-backdrop-close');
     cancelBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -26,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 4. Function to show Toast
     function showToast(title, message) {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -46,13 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         toastContainer.appendChild(toast);
 
-        // Auto close after 3s
         const autoClose = setTimeout(() => {
             toast.classList.add('hide');
             setTimeout(() => toast.remove(), 300);
         }, 3000);
 
-        // Manual close
         toast.querySelector('.toast-close').addEventListener('click', () => {
             clearTimeout(autoClose);
             toast.classList.add('hide');
@@ -60,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Validation logic
     const validateForm = (modalId) => {
         const modal = document.querySelector(modalId);
         const inputs = modal.querySelectorAll('input, select');
@@ -79,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return isValid;
     };
 
-    // Add Lesson Submit
     const addBtn = document.querySelector('#lessonModal .btn-submit-modal');
     if (addBtn) {
         addBtn.addEventListener('click', () => {
@@ -90,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Edit Lesson Submit
     const saveBtn = document.querySelector('#editLessonModal .btn-submit-modal');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
@@ -101,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Delete Lesson Confirm
     const deleteConfirmBtn = document.querySelector('.btn-danger-confirm');
     if (deleteConfirmBtn) {
         deleteConfirmBtn.addEventListener('click', () => {
@@ -110,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Remove error class on input
     document.querySelectorAll('.form-group input, .form-group select').forEach(element => {
         element.addEventListener('input', () => {
             element.closest('.form-group').classList.remove('error');
