@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý bài học</title>
+    <link rel="stylesheet" href="../css/product-manager.css" />
+</head>
+<body>
+    <div class="layout">
+        <div class="sidebar">
+            <div class="logo-section">
+                <span class="logo-emoji">📚</span>
+                <div class="logo-text">
+                    <h2>Study Tracker</h2>
+                    <p>Quản lý tiến độ học tập</p>
+                </div>
+            </div>
+
+            <ul>
+                <li>
+                    <img src="../assets/images/Vector 4.png" alt="" class="nav-icon">
+                    Thống kê
+                </li>
+                <li>
+                    <img src="../assets/images/Vector 2.png" alt="" class="nav-icon">
+                    Quản lý môn học
+                </li>
+                <li class="active">
+                    <img src="../assets/images/Vector (1).png" alt="" class="nav-icon">
+                    Quản lý bài học
+                </li>
+            </ul>
+        </div>
+
+        <div class="main">
+            <div class="top-bar">
+                <div class="top-left">
+                    <img src="../assets/icons/four.svg" />
+                </div>
+
+                <div class="top-right">
+                    <img src="../assets/icons/Notification.svg" />
+                    <img src="../assets/icons/question.svg" />
+                    <img src="../assets/icons/Cog settings.png" />
+                    <img src="../assets/icons/Avatar w. photo.svg" />
+                </div>
+            </div>
+
+            <div class="header">
+                <h1>Bài học</h1>
+
+                <div class="header-right">
+                    <select class="course-filter">
+                        <option value="">Lọc theo môn học</option>
+                        <option value="html">HTML cơ bản</option>
+                        <option value="css">CSS cơ bản</option>
+                    </select>
+
+                    <a href="#lessonModal" class="btn-add">Thêm mới bài học</a>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-checkbox"><input type="checkbox"></th>
+                        <th class="col-name">Tên bài học <span class="sort-icon">↑↓</span></th>
+                        <th class="col-time">Thời gian học <span class="sort-icon">↑↓</span></th>
+                        <th class="col-status">Trạng thái</th>
+                        <th class="col-action">Chức năng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row-checked">
+                        <td><input type="checkbox" checked></td>
+                        <td>Session 01 - Tổng quan về HTML</td>
+                        <td>45</td>
+                        <td><span class="status-badge success">Đã hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Session 02 - Thẻ Inline và Block</td>
+                        <td>60</td>
+                        <td><span class="status-badge warning">Chưa hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-checked">
+                        <td><input type="checkbox" checked></td>
+                        <td>Session 03 - Form và Table</td>
+                        <td>40</td>
+                        <td><span class="status-badge success">Đã hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-checked">
+                        <td><input type="checkbox" checked></td>
+                        <td>Session 04 - CSS cơ bản</td>
+                        <td>45</td>
+                        <td><span class="status-badge warning">Chưa hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Session 05 - CSS layout</td>
+                        <td>60</td>
+                        <td><span class="status-badge warning">Chưa hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="row-checked">
+                        <td><input type="checkbox" checked></td>
+                        <td>Session 12 - Con trỏ trong C</td>
+                        <td>45</td>
+                        <td><span class="status-badge success">Đã hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Session 15 - Đọc và ghi file</td>
+                        <td>60</td>
+                        <td><span class="status-badge warning">Chưa hoàn thành</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="action-btn delete-btn"></button>
+                                <button class="action-btn edit-btn"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <button class="page-arrow prev">&leftarrow;</button>
+                <button class="page-num">1</button>
+                <button class="page-num">2</button>
+                <button class="page-num active">3</button>
+                <button class="page-num">4</button>
+                <button class="page-num">5</button>
+                <button class="page-num">6</button>
+                <button class="page-num">7</button>
+                <span class="page-dots">...</span>
+                <button class="page-num">20</button>
+                <button class="page-arrow next">&rightarrow;</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Thêm mới bài học -->
+    <div class="modal-overlay" id="lessonModal">
+        <a href="#" class="modal-backdrop-close"></a>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Thêm mới bài học</h3>
+                <a href="#" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên bài học</label>
+                    <input type="text" id="lessonName" placeholder="Session 10 - Cấu trúc điều khiển">
+                    <span class="error-message">Tên bài học không được để trống</span>
+                </div>
+                <div class="form-group">
+                    <label>Tên môn học</label>
+                    <select id="lessonCourse">
+                        <option value="">Lập trình C cơ bản</option>
+                        <option value="html">HTML cơ bản</option>
+                        <option value="css">CSS cơ bản</option>
+                    </select>
+                    <span class="error-message">Loại môn học không được để trống</span>
+                </div>
+                <div class="form-group">
+                    <label>Thời gian học</label>
+                    <input type="number" id="lessonTime" placeholder="45">
+                    <span class="error-message">Thời gian học không được để trống</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel-modal">Hủy</button>
+                <button class="btn-submit-modal">Thêm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Cập nhật bài học -->
+    <div class="modal-overlay" id="editLessonModal">
+        <a href="#" class="modal-backdrop-close"></a>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cập nhật bài học</h3>
+                <a href="#" class="close-btn">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Tên bài học</label>
+                    <input type="text" id="editLessonName" placeholder="Session 10 - Cấu trúc điều khiển">
+                    <span class="error-message">Tên bài học không được để trống</span>
+                </div>
+                <div class="form-group">
+                    <label>Tên môn học</label>
+                    <select id="editLessonCourse">
+                        <option value="">Lập trình C cơ bản</option>
+                        <option value="html">HTML cơ bản</option>
+                        <option value="css">CSS cơ bản</option>
+                    </select>
+                    <span class="error-message">Loại môn học không được để trống</span>
+                </div>
+                <div class="form-group">
+                    <label>Thời gian học</label>
+                    <input type="number" id="editLessonTime" placeholder="45">
+                    <span class="error-message">Thời gian học không được để trống</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel-modal">Hủy</button>
+                <button class="btn-submit-modal btn-save">Lưu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Xác nhận xóa -->
+    <div class="modal-overlay" id="deleteModal">
+        <a href="#" class="modal-backdrop-close"></a>
+        <div class="modal-content delete-modal-box">
+            <div class="modal-body-delete">
+                <div class="alert-icon-wrapper">
+                    <div class="alert-icon-circle">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V13" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 17.0195V17" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="delete-modal-title">Xác nhận</h3>
+                <p class="delete-modal-desc">Bạn có chắc chắn muốn xóa bài học này khỏi hệ thống không?</p>
+            </div>
+            <div class="modal-footer-delete">
+                <button class="btn-cancel-modal">Hủy</button>
+                <button class="btn-danger-confirm">Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="../js/product-manager.js"></script>
+</body>
+</html>

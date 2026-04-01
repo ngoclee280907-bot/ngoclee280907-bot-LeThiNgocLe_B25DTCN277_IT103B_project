@@ -30,6 +30,18 @@
         </div>
 
         <div class="main">
+            <div class="top-bar">
+                <div class="top-left">
+                    <img src="/assets/icons/four.svg" />
+                </div>
+
+                <div class="top-right">
+                    <img src="/assets/icons/Notification.svg" />
+                    <img src="/assets/icons/question.svg" />
+                    <img src="/assets/icons/Cog settings.png" />
+                    <img src="/assets/icons/Avatar w. photo.svg" />
+                </div>
+            </div>
 
             <div class="header">
             <h1>Môn học</h1>
@@ -226,15 +238,23 @@
 
     <div class="modal-overlay" id="deleteModal">
         <a href="#" class="modal-backdrop-close"></a>
-        <div class="modal-content modal-sm">
-            <div class="modal-body text-center">
-                <div class="delete-icon">🗑️</div>
-                <h3>Xác nhận xóa?</h3>
-                <p>Bạn có chắc chắn muốn xóa môn học này không? Hành động này không thể hoàn tác.</p>
+        <div class="modal-content delete-modal-box">
+            <div class="modal-body-delete">
+                <div class="alert-icon-wrapper">
+                    <div class="alert-icon-circle">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 9V13" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 17.0195V17" stroke="#DC2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="10" stroke="#DC2626" stroke-width="2"/>
+                        </svg>
+                    </div>
+                </div>
+                <h3 class="delete-modal-title">Xác nhận</h3>
+                <p class="delete-modal-desc">Bạn có chắc chắn muốn xóa môn học <strong>Lập trình cơ bản Frontend Fundamental</strong> khỏi hệ thống không?</p>
             </div>
-            <div class="modal-footer flex-center">
-                <a href="#" class="btn-cancel">Hủy bỏ</a>
-                <button class="btn-danger">Xác nhận xóa</button>
+            <div class="modal-footer-delete">
+                <a href="#" class="btn-cancel">Hủy</a>
+                <button class="btn-danger btn-delete-confirm">Xóa</button>
             </div>
         </div>
     </div>
@@ -249,6 +269,7 @@
         <button class="page-btn">&gt;</button>
     </div>
 
+    <div id="toast-container" class="toast-container"></div>
     <script src="../js/category-manager.js"></script>
 </body>
 </html>

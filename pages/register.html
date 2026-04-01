@@ -13,40 +13,49 @@
             <p>Đăng ký tài khoản để sử dụng dịch vụ</p>
         </div>
 
-        <div class="form">
+        <form id="registerForm" class="form">
             <div class="row">
-            <div class="field">
-                <label>Họ và tên đệm</label>
-                <input type="text">
+                <div class="field">
+                    <label>Họ và tên</label>
+                    <input type="text" id="fullname" placeholder="Nhập họ và tên">
+                    <span class="error-message" id="fullnameError"></span>
+                </div>
             </div>
+
             <div class="field">
-                <label>Tên</label>
-                <input type="text">
+                <label>Email</label>
+                <input type="text" id="email" placeholder="you@company.com">
+                <span class="error-message" id="emailError"></span>
             </div>
-        </div>
 
-        <div class="field">
-        <label>Email</label>
-        <input type="text" placeholder="you@company.com">
-        </div>
+            <div class="field">
+                <label>Mật khẩu</label>
+                <input type="password" id="password" placeholder="Tối thiểu 8 ký tự">
+                <span class="error-message" id="passwordError"></span>
+            </div>
 
-        <div class="field">
-        <label>Mật khẩu</label>
-        <input type="password">
-        </div>
+            <div class="field">
+                <label>Xác nhận mật khẩu</label>
+                <input type="password" id="confirmPassword" placeholder="Nhập lại mật khẩu">
+                <span class="error-message" id="confirmPasswordError"></span>
+            </div>
 
-        <div class="checkbox">
-        <input type="checkbox">
-        <span>Bạn đồng ý với <a href="#">chính sách và điều khoản</a></span>
-        </div>
+            <div class="checkbox-wrapper">
+                <div class="checkbox">
+                    <input type="checkbox" id="agreeTerms">
+                    <span>Bạn đồng ý với <a href="#">chính sách và điều khoản</a></span>
+                </div>
+                <span class="error-message" id="termsError"></span>
+            </div>
 
-        <button class="btn">Đăng ký</button>
+            <button type="submit" class="btn">Đăng ký</button>
 
-        <p class="login">
-        Bạn đã có tài khoản? <a href="./login.html">Đăng nhập</a>
-        </p>
+            <p class="login">
+                Bạn đã có tài khoản? <a href="./login.html">Đăng nhập</a>
+            </p>
+        </form>
     </div>
-    </div>
+    <div id="toast-container" class="toast-container"></div>
     <script src="../js/register.js"></script>
 </body>
 </html>
