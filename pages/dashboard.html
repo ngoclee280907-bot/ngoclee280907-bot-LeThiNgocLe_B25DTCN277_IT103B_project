@@ -13,20 +13,39 @@
        Tìm kiếm</div>
 
       <div class="menu">
-        <span class="active">Trang chủ</span>
-        <span>Môn học</span>
-        <span>Bài học</span>
+        <a href="./dashboard.html" class="active">Trang chủ</a>
+        <a href="./category-manager.html">Môn học</a>
+        <a href="./product-manager.html">Bài học</a>
       </div>
 
       <div class="icons">
         <span>
-        <img src="/assets/icons/love-svgrepo-com.svg" />
+          <img src="/assets/icons/love-svgrepo-com.svg" />
         </span>
-        <span>
-        <img src="/assets/icons/user-avatar-profile-person-people-svgrepo-com.svg" />
+        <span class="user-profile">
+          <img src="/assets/icons/user-avatar-profile-person-people-svgrepo-com.svg" />
+          <div class="logout-dropdown">
+            <a href="#logoutModal">Đăng xuất</a>
+          </div>
         </span>
       </div>
     </div>
+
+    <div class="modal-overlay" id="logoutModal">
+      <a href="#" class="modal-backdrop-close"></a>
+      <div class="modal-content">
+        <div class="modal-body-delete">
+           <h3 class="delete-modal-title">Xác nhận đăng xuất</h3>
+           <p class="delete-modal-desc">Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?</p>
+        </div>
+        <div class="modal-footer-delete">
+          <a href="#" class="btn-cancel">Hủy</a>
+          <button id="confirmLogout" class="btn-primary-confirm">Đăng xuất</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
 
     <div class="container">
       <div class="tabs">
@@ -102,8 +121,8 @@
         <div class="cols">
           <div>
             <h4>Danh mục</h4>
-            <p>Môn học</p>
-            <p>Bài học</p>
+            <a href="./category-manager.html"><p>Môn học</p></a>
+            <a href="./product-manager.html"><p>Bài học</p></a>
             <p>Ghi chú</p>
           </div>
 

@@ -36,15 +36,35 @@ body {
 }
 
 .sidebar li {
-    padding: 10px;
     border-radius: 6px;
     cursor: pointer;
+    margin-bottom: 4px;
+}
+
+.sidebar li a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 .sidebar li.active {
     background: #cce5ff;
+}
+
+.sidebar li.active a {
     color: blue;
 }
+
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+}
+
 
 .main {
     flex: 1;
@@ -325,11 +345,11 @@ td {
     display: none;
 }
 
-.form-group input:placeholder-shown:not(:focus):invalid {
+.form-group.field-error input[type="text"] {
     border-color: #ff4d4f;
 }
 
-.form-group input:placeholder-shown:not(:focus):invalid + .error-message {
+.form-group.field-error .error-message {
     display: block;
 }
 

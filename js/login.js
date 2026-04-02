@@ -1,51 +1,57 @@
-const btn = document.querySelector(".btn");
-const inputs = document.querySelectorAll(".input");
-const checkbox = document.querySelector("input[type='checkbox']");
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
 
-let message = document.getElementById("message");
-if (!message) {
-    message = document.createElement("p");
-    message.id = "message";
-    message.style.textAlign = "center";
-    message.style.marginTop = "15px";
-    document.querySelector(".container").appendChild(message);
-}
+    const showError = (inputId, message) => {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(inputId + 'Error');
+        const parent = input.closest('.field');
+        parent.classList.add('error');
+        errorSpan.textContent = message;
+    };
 
-window.onload = function () {
-    const savedEmail = localStorage.getItem("rememberEmail");
-    if (savedEmail) {
-        inputs[0].value = savedEmail;
-        checkbox.checked = true;
-    }
-};
+    const clearError = (inputId) => {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(inputId + 'Error');
+        const parent = input.closest('.field');
+        parent.classList.remove('error');
+        errorSpan.textContent = '';
+    };
 
-btn.addEventListener("click", function () {
-    const email = inputs[0].value.trim();
-    const password = inputs[1].value.trim();
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
 
-    let users = JSON.parse(localStorage.getItem("users")) || [];
+        if (emailInput.value.trim() === '') {
+            showError('email', 'Email không được để trống');
+            isValid = false;
+        } else {
+            clearError('email');
+        }
 
-    message.innerText = "";
-    message.style.color = "red";
+        if (passwordInput.value === '') {
+            showError('password', 'Mật khẩu không được để trống');
+            isValid = false;
+        } else {
+            clearError('password');
+        }
 
-    if (email === "" || password === "") {
-        message.innerText = "Vui lòng nhập đầy đủ thông tin!";
-        return;
-    }
+        if (isValid) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === emailInput.value.trim() && u.password === passwordInput.value);
 
-    const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                window.location.href = './dashboard.html';
+            } else {
+                showError('email', 'Email hoặc mật khẩu không chính xác');
+                showError('password', '');
+            }
+        }
+    });
 
-    if (!user) {
-        message.innerText = "Sai email hoặc mật khẩu!";
-        return;
-    }
-
-    if (checkbox.checked) {
-        localStorage.setItem("rememberEmail", email);
-    } else {
-        localStorage.removeItem("rememberEmail");
-    }
-
-    message.style.color = "green";
-    message.innerText = "Đăng nhập thành công!";
+    [emailInput, passwordInput].forEach(input => {
+        input.addEventListener('input', () => clearError(input.id));
+    });
 });

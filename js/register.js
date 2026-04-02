@@ -9,28 +9,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const showError = (inputId, message) => {
         const input = document.getElementById(inputId);
-        const errorSpan = document.getElementById(inputId + 'Error');
+        let errorSpan = document.getElementById(inputId + 'Error');
+        if (inputId === 'agreeTerms') errorSpan = document.getElementById('termsError');
         const parent = input.closest('.field') || input.closest('.checkbox-wrapper');
         
         parent.classList.add('error');
-        errorSpan.textContent = message;
+        if (errorSpan) errorSpan.textContent = message;
     };
 
     const clearError = (inputId) => {
         const input = document.getElementById(inputId);
-        const errorSpan = document.getElementById(inputId + 'Error');
+        let errorSpan = document.getElementById(inputId + 'Error');
+        if (inputId === 'agreeTerms') errorSpan = document.getElementById('termsError');
         const parent = input.closest('.field') || input.closest('.checkbox-wrapper');
         
         parent.classList.remove('error');
-        errorSpan.textContent = '';
+        if (errorSpan) errorSpan.textContent = '';
     };
 
-    const hideToast = (toast) => {
-        toast.classList.add('hide');
-        setTimeout(() => toast.remove(), 300);
-    };
-
-    const showToast = (title, message, duration = 3000) => {
+    const showToast = (title, message) => {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.innerHTML = `
@@ -43,21 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="toast-title">${title}</div>
                 <div class="toast-message">${message}</div>
             </div>
-            <div class="toast-close">&times;</div>
         `;
         toastContainer.appendChild(toast);
-
-        const autoHide = setTimeout(() => hideToast(toast), duration);
-
-        toast.querySelector('.toast-close').onclick = () => {
-            clearTimeout(autoHide);
-            hideToast(toast);
-        };
-    };
-
-    const validateEmail = (email) => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return re.test(String(email).toLowerCase());
     };
 
     registerForm.addEventListener('submit', (e) => {
@@ -74,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (emailInput.value.trim() === '') {
             showError('email', 'Email không được để trống');
             isValid = false;
-        } else if (!validateEmail(emailInput.value.trim())) {
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim())) {
             showError('email', 'Email phải đúng định dạng');
             isValid = false;
         } else {
@@ -117,8 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const users = JSON.parse(localStorage.getItem('users')) || [];
             
-            const existingUser = users.find(user => user.email === newUser.email);
-            if (existingUser) {
+            if (users.find(u => u.email === newUser.email)) {
                 showError('email', 'Email này đã được đăng ký');
                 return;
             }

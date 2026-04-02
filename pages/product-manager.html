@@ -9,26 +9,27 @@
 <body>
     <div class="layout">
         <div class="sidebar">
-            <div class="logo-section">
-                <span class="logo-emoji">📚</span>
-                <div class="logo-text">
-                    <h2>Study Tracker</h2>
-                    <p>Quản lý tiến độ học tập</p>
-                </div>
-            </div>
+            <h2>📚 Study Tracker</h2>
+            <p>Quản lý tiến độ học tập</p>
 
             <ul>
                 <li>
-                    <img src="../assets/images/Vector 4.png" alt="" class="nav-icon">
-                    Thống kê
+                    <a href="./dashboard.html">
+                        <img src="../assets/images/Vector 4.png" alt="" class="nav-icon">
+                        Thống kê
+                    </a>
                 </li>
                 <li>
-                    <img src="../assets/images/Vector 2.png" alt="" class="nav-icon">
-                    Quản lý môn học
+                    <a href="./category-manager.html">
+                        <img src="../assets/images/Vector 2.png" alt="" class="nav-icon">
+                        Quản lý môn học
+                    </a>
                 </li>
                 <li class="active">
-                    <img src="../assets/images/Vector (1).png" alt="" class="nav-icon">
-                    Quản lý bài học
+                    <a href="./product-manager.html">
+                        <img src="../assets/images/Vector (1).png" alt="" class="nav-icon">
+                        Quản lý bài học
+                    </a>
                 </li>
             </ul>
         </div>
@@ -175,7 +176,6 @@
         </div>
     </div>
 
-    <!-- Modal Thêm mới bài học -->
     <div class="modal-overlay" id="lessonModal">
         <a href="#" class="modal-backdrop-close"></a>
         <div class="modal-content">
@@ -211,7 +211,6 @@
         </div>
     </div>
 
-    <!-- Modal Cập nhật bài học -->
     <div class="modal-overlay" id="editLessonModal">
         <a href="#" class="modal-backdrop-close"></a>
         <div class="modal-content">
@@ -247,7 +246,6 @@
         </div>
     </div>
 
-    <!-- Modal Xác nhận xóa -->
     <div class="modal-overlay" id="deleteModal">
         <a href="#" class="modal-backdrop-close"></a>
         <div class="modal-content delete-modal-box">
@@ -271,7 +269,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <script src="../js/product-manager.js"></script>

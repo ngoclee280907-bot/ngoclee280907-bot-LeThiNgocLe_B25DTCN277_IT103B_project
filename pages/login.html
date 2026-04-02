@@ -11,24 +11,29 @@
     <h1 class="title">Đăng nhập</h1>
     <p class="subtitle">Đăng nhập tài khoản để sử dụng hệ thống quản lý.</p>
 
-    <label>Email</label>
-    <input
-     type="text"
-    class="input"
-    placeholder="nva@gmail.com">
-
-    <label>Mật khẩu</label>
-    <input type="password" class="input" placeholder="12345678">
-
-    <div class="options">
-        <div class="remember">
-            <input type="checkbox" placeholder="check">
-            <span>Nhớ tài khoản</span>
+    <form id="loginForm">
+        <div class="field">
+            <label>Email</label>
+            <input type="text" id="email" class="input" placeholder="nva@gmail.com">
+            <span class="error-message" id="emailError"></span>
         </div>
-        <a href="#">Quên mật khẩu?</a>
-    </div>
 
-    <button class="btn">Đăng nhập</button>
+        <div class="field">
+            <label>Mật khẩu</label>
+            <input type="password" id="password" class="input" placeholder="12345678">
+            <span class="error-message" id="passwordError"></span>
+        </div>
+
+        <div class="options">
+            <div class="remember">
+                <input type="checkbox">
+                <span>Nhớ tài khoản</span>
+            </div>
+            <a href="#">Quên mật khẩu?</a>
+        </div>
+
+        <button type="submit" class="btn">Đăng nhập</button>
+    </form>
 
     <p class="register">
         Bạn chưa có tài khoản? 
