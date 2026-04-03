@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const registerForm = document.getElementById('registerForm');
-    const fullnameInput = document.getElementById('fullname');
+    const lastNameInput = document.getElementById('lastName');
+    const firstNameInput = document.getElementById('firstName');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
     const agreeTermsCheckbox = document.getElementById('agreeTerms');
     const toastContainer = document.getElementById('toast-container');
 
@@ -48,11 +48,18 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         let isValid = true;
 
-        if (fullnameInput.value.trim() === '') {
-            showError('fullname', 'Họ và tên không được để trống');
+        if (lastNameInput.value.trim() === '') {
+            showError('lastName', 'Bạn vui lòng nhập họ và tên đệm');
             isValid = false;
         } else {
-            clearError('fullname');
+            clearError('lastName');
+        }
+
+        if (firstNameInput.value.trim() === '') {
+            showError('firstName', 'Bạn vui lòng nhập tên');
+            isValid = false;
+        } else {
+            clearError('firstName');
         }
 
         if (emailInput.value.trim() === '') {
@@ -75,15 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('password');
         }
 
-        if (confirmPasswordInput.value === '') {
-            showError('confirmPassword', 'Mật khẩu xác nhận không được để trống');
-            isValid = false;
-        } else if (confirmPasswordInput.value !== passwordInput.value) {
-            showError('confirmPassword', 'Mật khẩu không trùng khớp');
-            isValid = false;
-        } else {
-            clearError('confirmPassword');
-        }
+
 
         if (!agreeTermsCheckbox.checked) {
             showError('agreeTerms', 'Bạn phải đồng ý với chính sách và điều khoản');
@@ -94,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (isValid) {
             const newUser = {
-                fullname: fullnameInput.value.trim(),
+                fullname: `${lastNameInput.value.trim()} ${firstNameInput.value.trim()}`.trim(),
                 email: emailInput.value.trim(),
                 password: passwordInput.value
             };
@@ -117,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    [fullnameInput, emailInput, passwordInput, confirmPasswordInput].forEach(input => {
+    [lastNameInput, firstNameInput, emailInput, passwordInput].forEach(input => {
         input.addEventListener('input', () => clearError(input.id));
     });
     agreeTermsCheckbox.addEventListener('change', () => clearError('agreeTerms'));

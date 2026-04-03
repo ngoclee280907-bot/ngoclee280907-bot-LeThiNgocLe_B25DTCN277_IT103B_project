@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('currentUser')) {
+        window.location.replace('./dashboard.html');
+        return;
+    }
+
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -43,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (user) {
                 localStorage.setItem('currentUser', JSON.stringify(user));
-                window.location.href = './dashboard.html';
+                window.location.replace('./dashboard.html');
             } else {
                 showError('email', 'Email hoặc mật khẩu không chính xác');
                 showError('password', '');
