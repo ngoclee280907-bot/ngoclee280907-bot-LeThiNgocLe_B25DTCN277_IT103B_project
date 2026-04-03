@@ -1,8 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
     const toastContainer = document.getElementById('toast-container');
-    const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
+    const categoryTableBody = document.getElementById('categoryTableBody');
+    const paginationContainer = document.getElementById('pagination');
+    const searchInput = document.getElementById('searchCategory');
+    const filterSelect = document.getElementById('filterStatus');
+    const sortSelect = document.getElementById('sortCategory');
+    
     const addCategoryBtn = document.querySelector('#categoryModal .btn-submit');
     const categoryNameInput = document.getElementById('categoryName');
+    
+    const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
+    const deleteCategoryNameSpan = document.getElementById('deleteCategoryName');
+    
+    // State
+    let categories = JSON.parse(localStorage.getItem('categories')) || [];
+    if (categories.length === 0) {
+        // Initialize mock data if empty
+        categories = [
+            { id: 1, name: 'Lập trình C', status: 'active', createdAt: Date.now() - 100000 },
+            { id: 2, name: 'Lập trình Frontend với ReactJS', status: 'inactive', createdAt: Date.now() - 90000 },
+            { id: 3, name: 'Lập trình Backend với Spring boot', status: 'active', createdAt: Date.now() - 80000 },
+            { id: 4, name: 'Lập trình Frontend với VueJS', status: 'inactive', createdAt: Date.now() - 70000 },
+            { id: 5, name: 'Cấu trúc dữ liệu và giải thuật', status: 'inactive', createdAt: Date.now() - 60000 },
+            { id: 6, name: 'Phân tích và thiết kế hệ thống', status: 'inactive', createdAt: Date.now() - 50000 },
+            { id: 7, name: 'Toán cao cấp', status: 'active', createdAt: Date.now() - 40000 },
+            { id: 8, name: 'Tiếng Anh chuyên ngành', status: 'inactive', createdAt: Date.now() - 30000 }
+        ];
+        localStorage.setItem('categories', JSON.stringify(categories));
+    }
+
+    let currentPage = 1;
+    const itemsPerPage = 5;
+    let currentDeleteId = null;
 
     const hideToast = (toast) => {
         toast.classList.add('hide');
@@ -36,13 +65,144 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
+    const renderCategories = () => {
+        const query = (searchInput.value || '').toLowerCase().trim();
+        const filter = filterSelect.value;
+        const sort = sortSelect.value;
+
+        // Apply Search & Filter
+        let filtered = categories.filter(c => {
+            const matchName = c.name.toLowerCase().includes(query);
+            const matchStatus = filter === '' || c.status === filter;
+            return matchName && matchStatus;
+        });
+
+        // Apply Sort
+        filtered.sort((a, b) => {
+            if (sort === 'time_desc') return b.createdAt - a.createdAt;
+            if (sort === 'time_asc') return a.createdAt - b.createdAt;
+            if (sort === 'name_asc') return a.name.localeCompare(b.name);
+            if (sort === 'name_desc') return b.name.localeCompare(a.name);
+            return 0;
+        });
+
+        // Apply Pagination
+        const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginated = filtered.slice(startIndex, endIndex);
+
+        // Render Table
+        categoryTableBody.innerHTML = '';
+        if (paginated.length === 0) {
+            categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">Không tìm thấy môn học nào</td></tr>`;
+        } else {
+            paginated.forEach(c => {
+                const tr = document.createElement('tr');
+                const statusText = c.status === 'active' ? 'Đang hoạt động' : 'Ngừng hoạt động';
+                const statusClass = c.status === 'active' ? 'active' : 'inactive';
+
+                tr.innerHTML = `
+                    <td>${c.name}</td>
+                    <td><span class="status ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <a href="#deleteModal" class="icon-btn btn-delete-row" data-id="${c.id}" data-name="${c.name}">
+                            <img src="../assets/images/trash-2.png" alt="Xóa">
+                        </a>
+                        <a href="#editModal" class="icons-btn">
+                            <img src="../assets/images/_Button base.png" alt="Sửa">
+                        </a>
+                    </td>
+                `;
+                categoryTableBody.appendChild(tr);
+            });
+        }
+
+        // Render Pagination UI
+        renderPagination(totalPages);
+        bindRowEvents();
+    };
+
+    const renderPagination = (totalPages) => {
+        paginationContainer.innerHTML = '';
+        
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.textContent = '<';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderCategories();
+            }
+        };
+        paginationContainer.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageBtn = document.createElement('button');
+            pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+            pageBtn.textContent = i;
+            pageBtn.onclick = () => {
+                currentPage = i;
+                renderCategories();
+            };
+            paginationContainer.appendChild(pageBtn);
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.textContent = '>';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderCategories();
+            }
+        };
+        paginationContainer.appendChild(nextBtn);
+    };
+
+    const bindRowEvents = () => {
+        const deleteBtns = document.querySelectorAll('.btn-delete-row');
+        deleteBtns.forEach(btn => {
+            btn.onclick = (e) => {
+                currentDeleteId = parseInt(btn.getAttribute('data-id'));
+                deleteCategoryNameSpan.textContent = btn.getAttribute('data-name');
+            };
+        });
+    };
+
+    // Events Listeners for Search, Filter, Sort
+    searchInput.addEventListener('input', () => {
+        currentPage = 1; // Reset to page 1 on new search
+        renderCategories();
+    });
+
+    filterSelect.addEventListener('change', () => {
+        currentPage = 1;
+        renderCategories();
+    });
+
+    sortSelect.addEventListener('change', () => {
+        currentPage = 1;
+        renderCategories();
+    });
+
+    // Delete Event
     if (deleteConfirmBtn) {
         deleteConfirmBtn.onclick = () => {
-            window.location.hash = '#';
-            showToast('Thành công', 'Xóa bài học thành công');
+            categories = categories.filter(c => c.id !== currentDeleteId);
+            localStorage.setItem('categories', JSON.stringify(categories));
+            
+            window.location.hash = '#'; // Close modal
+            showToast('Thành công', 'Xóa môn học thành công');
+            renderCategories();
         };
     }
 
+    // Add Category Event
     if (addCategoryBtn) {
         addCategoryBtn.onclick = () => {
             const nameValue = categoryNameInput.value.trim();
@@ -52,9 +212,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 formGroup.classList.add('field-error');
             } else {
                 formGroup.classList.remove('field-error');
-                window.location.hash = '#';
+                
+                const statusRadio = document.querySelector('input[name="statusAdd"]:checked');
+                const newCategory = {
+                    id: Date.now(),
+                    name: nameValue,
+                    status: statusRadio ? statusRadio.value : 'active',
+                    createdAt: Date.now()
+                };
+                
+                categories.push(newCategory);
+                localStorage.setItem('categories', JSON.stringify(categories));
+                
+                window.location.hash = '#'; // Close modal
                 showToast('Thành công', 'Thêm mới môn học thành công');
                 categoryNameInput.value = '';
+                
+                // Go to page 1 to see the new item if sorted by newest
+                currentPage = 1;
+                renderCategories();
             }
         };
     }
@@ -64,4 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryNameInput.closest('.form-group').classList.remove('field-error');
         };
     }
+
+    // Initial render
+    renderCategories();
 });

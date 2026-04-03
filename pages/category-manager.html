@@ -53,10 +53,16 @@
             <h1>Môn học</h1>
 
             <div class="header-right">
-                <select>
+                <select id="filterStatus">
                     <option value="">Lọc theo trạng thái</option>
                     <option value="active">Đang hoạt động</option>
-                    <option value="status inactive">Ngừng hoạt động</option>
+                    <option value="inactive">Ngừng hoạt động</option>
+                </select>
+                <select id="sortCategory" style="border: 1px solid #D0D5DD; border-radius: 8px; padding: 10px 16px; color: #667085; font-size: 14px; outline: none; margin-right: 12px; background: white; cursor: pointer;">
+                    <option value="time_desc">Mới nhất</option>
+                    <option value="time_asc">Cũ nhất</option>
+                    <option value="name_asc">Tên (A-Z)</option>
+                    <option value="name_desc">Tên (Z-A)</option>
                 </select>
 
                 <a href="#categoryModal" class="btn-add">+ Thêm mới môn học</a>
@@ -64,7 +70,7 @@
         </div>
             <div class="search-wrapper">
                 <div class="search-box">
-                    <input type="text" placeholder="Tìm kiếm môn học theo tên...">
+                    <input type="text" id="searchCategory" placeholder="Tìm kiếm môn học theo tên...">
                     <img src="/assets/images/Shape.png" alt="Tìm kiếm" class="search-icon">
                 </div>
             </div>
@@ -77,110 +83,8 @@
                         <th>Chức năng</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Lập trình C</td>
-                        <td><span class="status active">Đang hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Lập trình Frontend với ReactJS</td>
-                        <td><span class="status inactive">Ngừng hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Lập trình Backend với Spring boot</td>
-                        <td><span class="status active">Đang hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Lập trình Frontend với VueJS</td>
-                        <td><span class="status inactive">Ngừng hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Cấu trúc dữ liệu và giải thuật</td>
-                        <td><span class="status inactive">Ngừng hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Phân tích và thiết kế hệ thống</td>
-                        <td><span class="status inactive">Ngừng hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Toán cao cấp</td>
-                        <td><span class="status active">Đang hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Tiếng Anh chuyên ngành</td>
-                        <td><span class="status inactive">Ngừng hoạt động</span></td>
-                        <td>
-                            <a href="#deleteModal" class="icon-btn">
-                                <img src="../assets/images/trash-2.png" alt="Xóa">
-                            </a>
-                            <a href="#editModal" class="icons-btn">
-                                <img src="../assets/images/_Button base.png" alt="Sửa">
-                            </a>
-                        </td>
-                    </tr>
+                <tbody id="categoryTableBody">
+                    <!-- Categories will be rendered here dynamically -->
                 </tbody>
             </table>
 
@@ -256,7 +160,7 @@
                     </div>
                 </div>
                 <h3 class="delete-modal-title">Xác nhận</h3>
-                <p class="delete-modal-desc">Bạn có chắc chắn muốn xóa môn học <strong>Lập trình cơ bản Frontend Fundamental</strong> khỏi hệ thống không?</p>
+                <p class="delete-modal-desc">Bạn có chắc chắn muốn xóa môn học <strong id="deleteCategoryName"></strong> khỏi hệ thống không?</p>
             </div>
             <div class="modal-footer-delete">
                 <a href="#" class="btn-cancel">Hủy</a>
@@ -265,14 +169,8 @@
         </div>
     </div>
 
-    <div class="pagination">
-        <button class="page-btn">&lt;</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">...</button>
-        <button class="page-btn">20</button>
-        <button class="page-btn">&gt;</button>
+    <div class="pagination" id="pagination">
+        <!-- Pagination logic dynamically renders here -->
     </div>
 
     <div id="toast-container" class="toast-container"></div>

@@ -108,6 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
 
+            localStorage.removeItem('currentUser');
+
             showToast('Thành công', 'Đăng ký tài khoản thành công! Đang chuyển hướng...');
             
             setTimeout(() => {
