@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstNameInput = document.getElementById('firstName');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
+    const rePasswordInput = document.getElementById('rePassword');
     const agreeTermsCheckbox = document.getElementById('agreeTerms');
     const toastContainer = document.getElementById('toast-container');
 
@@ -82,7 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('password');
         }
 
-
+        if (rePasswordInput.value === '') {
+            showError('rePassword', 'Bạn vui lòng nhập lại mật khẩu');
+            isValid = false;
+        } else if (rePasswordInput.value !== passwordInput.value) {
+            showError('rePassword', 'Mật khẩu không khớp');
+            isValid = false;
+        } else {
+            clearError('rePassword');
+        }
 
         if (!agreeTermsCheckbox.checked) {
             showError('agreeTerms', 'Bạn phải đồng ý với chính sách và điều khoản');
@@ -118,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    [lastNameInput, firstNameInput, emailInput, passwordInput].forEach(input => {
+    [lastNameInput, firstNameInput, emailInput, passwordInput, rePasswordInput].forEach(input => {
         input.addEventListener('input', () => clearError(input.id));
     });
     agreeTermsCheckbox.addEventListener('change', () => clearError('agreeTerms'));

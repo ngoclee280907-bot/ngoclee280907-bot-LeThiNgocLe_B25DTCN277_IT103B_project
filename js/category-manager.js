@@ -9,13 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const addCategoryBtn = document.querySelector('#categoryModal .btn-submit');
     const categoryNameInput = document.getElementById('categoryName');
     
+    const editCategoryBtn = document.querySelector('#editModal .btn-submit');
+    const editCategoryNameInput = document.getElementById('editCategoryName');
+    
     const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
     const deleteCategoryNameSpan = document.getElementById('deleteCategoryName');
     
-    // State
     let categories = JSON.parse(localStorage.getItem('categories')) || [];
     if (categories.length === 0) {
-        // Initialize mock data if empty
         categories = [
             { id: 1, name: 'Lập trình C', status: 'active', createdAt: Date.now() - 100000 },
             { id: 2, name: 'Lập trình Frontend với ReactJS', status: 'inactive', createdAt: Date.now() - 90000 },
@@ -32,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     const itemsPerPage = 5;
     let currentDeleteId = null;
+    let currentEditId = null;
 
     const hideToast = (toast) => {
         toast.classList.add('hide');
@@ -70,14 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const filter = filterSelect.value;
         const sort = sortSelect.value;
 
-        // Apply Search & Filter
         let filtered = categories.filter(c => {
             const matchName = c.name.toLowerCase().includes(query);
             const matchStatus = filter === '' || c.status === filter;
             return matchName && matchStatus;
         });
 
-        // Apply Sort
         filtered.sort((a, b) => {
             if (sort === 'time_desc') return b.createdAt - a.createdAt;
             if (sort === 'time_asc') return a.createdAt - b.createdAt;
@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return 0;
         });
 
-        // Apply Pagination
         const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
         if (currentPage > totalPages) currentPage = totalPages;
 
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const endIndex = startIndex + itemsPerPage;
         const paginated = filtered.slice(startIndex, endIndex);
 
-        // Render Table
         categoryTableBody.innerHTML = '';
         if (paginated.length === 0) {
             categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">Không tìm thấy môn học nào</td></tr>`;
@@ -111,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <a href="#deleteModal" class="icon-btn btn-delete-row" data-id="${c.id}" data-name="${c.name}">
                             <img src="../assets/images/trash-2.png" alt="Xóa">
                         </a>
-                        <a href="#editModal" class="icons-btn">
+                        <a href="#editModal" class="icons-btn btn-edit-row" data-id="${c.id}">
                             <img src="../assets/images/_Button base.png" alt="Sửa">
                         </a>
                     </td>
@@ -120,7 +118,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Render Pagination UI
         renderPagination(totalPages);
         bindRowEvents();
     };
@@ -172,11 +169,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteCategoryNameSpan.textContent = btn.getAttribute('data-name');
             };
         });
+
+        const editBtns = document.querySelectorAll('.btn-edit-row');
+        editBtns.forEach(btn => {
+            btn.onclick = () => {
+                currentEditId = parseInt(btn.getAttribute('data-id'));
+                const categoryToEdit = categories.find(c => c.id === currentEditId);
+                if (categoryToEdit) {
+                    editCategoryNameInput.value = categoryToEdit.name;
+                    const statusRadios = document.querySelectorAll('input[name="statusEdit"]');
+                    statusRadios.forEach(radio => {
+                        radio.checked = (radio.value === categoryToEdit.status);
+                    });
+                    editCategoryNameInput.closest('.form-group').classList.remove('field-error');
+                }
+            };
+        });
     };
 
-    // Events Listeners for Search, Filter, Sort
     searchInput.addEventListener('input', () => {
-        currentPage = 1; // Reset to page 1 on new search
+        currentPage = 1; 
         renderCategories();
     });
 
@@ -190,25 +202,38 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCategories();
     });
 
-    // Delete Event
     if (deleteConfirmBtn) {
         deleteConfirmBtn.onclick = () => {
             categories = categories.filter(c => c.id !== currentDeleteId);
             localStorage.setItem('categories', JSON.stringify(categories));
             
-            window.location.hash = '#'; // Close modal
+            document.querySelector('#deleteModal .btn-cancel').click();
             showToast('Thành công', 'Xóa môn học thành công');
             renderCategories();
         };
     }
 
-    // Add Category Event
+    // Add Category Modal trigger
+    const addModalTriggerEvent = document.querySelector('.btn-add');
+    if (addModalTriggerEvent) {
+        addModalTriggerEvent.addEventListener('click', () => {
+            categoryNameInput.value = '';
+            categoryNameInput.closest('.form-group').classList.remove('field-error');
+            document.querySelector('input[name="statusAdd"][value="active"]').checked = true;
+        });
+    }
+
     if (addCategoryBtn) {
         addCategoryBtn.onclick = () => {
             const nameValue = categoryNameInput.value.trim();
             const formGroup = categoryNameInput.closest('.form-group');
+            const errorMessage = formGroup.querySelector('.error-message');
             
             if (nameValue === '') {
+                errorMessage.textContent = 'Tên môn học không được để trống';
+                formGroup.classList.add('field-error');
+            } else if (categories.some(c => c.name.toLowerCase() === nameValue.toLowerCase())) {
+                errorMessage.textContent = 'Tên môn học không được phép trùng';
                 formGroup.classList.add('field-error');
             } else {
                 formGroup.classList.remove('field-error');
@@ -224,13 +249,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 categories.push(newCategory);
                 localStorage.setItem('categories', JSON.stringify(categories));
                 
-                window.location.hash = '#'; // Close modal
+                document.querySelector('#categoryModal .btn-cancel').click(); // Close modal
                 showToast('Thành công', 'Thêm mới môn học thành công');
                 categoryNameInput.value = '';
                 
-                // Go to page 1 to see the new item if sorted by newest
                 currentPage = 1;
                 renderCategories();
+            }
+        };
+    }
+
+    if (editCategoryBtn) {
+        editCategoryBtn.onclick = () => {
+            const nameValue = editCategoryNameInput.value.trim();
+            const formGroup = editCategoryNameInput.closest('.form-group');
+            const errorMessage = formGroup.querySelector('.error-message');
+            
+            if (nameValue === '') {
+                errorMessage.textContent = 'Tên môn học không được để trống';
+                formGroup.classList.add('field-error');
+            } else if (categories.some(c => c.id !== currentEditId && c.name.toLowerCase() === nameValue.toLowerCase())) {
+                errorMessage.textContent = 'Tên môn học không được phép trùng';
+                formGroup.classList.add('field-error');
+            } else {
+                formGroup.classList.remove('field-error');
+                
+                const statusRadio = document.querySelector('input[name="statusEdit"]:checked');
+                const categoryIndex = categories.findIndex(c => c.id === currentEditId);
+                
+                if (categoryIndex !== -1) {
+                    categories[categoryIndex].name = nameValue;
+                    categories[categoryIndex].status = statusRadio ? statusRadio.value : 'active';
+                    
+                    localStorage.setItem('categories', JSON.stringify(categories));
+                    
+                    document.querySelector('#editModal .btn-cancel').click(); // Close modal
+                    showToast('Thành công', 'Cập nhật môn học thành công');
+                    renderCategories();
+                }
             }
         };
     }
@@ -241,6 +297,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Initial render
+    if (editCategoryNameInput) {
+        editCategoryNameInput.oninput = () => {
+            editCategoryNameInput.closest('.form-group').classList.remove('field-error');
+        };
+    }
+
     renderCategories();
 });
