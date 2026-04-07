@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        window.location.replace('./login.html');
+        return;
+    }
+    const currentUserId = currentUser.email;
+
     const toastContainer = document.getElementById('toast-container');
     const categoryTableBody = document.getElementById('categoryTableBody');
     const paginationContainer = document.getElementById('pagination');
@@ -15,20 +22,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
     const deleteCategoryNameSpan = document.getElementById('deleteCategoryName');
     
-    let categories = JSON.parse(localStorage.getItem('categories')) || [];
-    if (categories.length === 0) {
+    let allCategories = JSON.parse(localStorage.getItem('categories')) || [];
+    let categories = allCategories.filter(c => c.userId === currentUserId);
+    
+    if (allCategories.length === 0) {
         categories = [
-            { id: 1, name: 'Lập trình C', status: 'active', createdAt: Date.now() - 100000 },
-            { id: 2, name: 'Lập trình Frontend với ReactJS', status: 'inactive', createdAt: Date.now() - 90000 },
-            { id: 3, name: 'Lập trình Backend với Spring boot', status: 'active', createdAt: Date.now() - 80000 },
-            { id: 4, name: 'Lập trình Frontend với VueJS', status: 'inactive', createdAt: Date.now() - 70000 },
-            { id: 5, name: 'Cấu trúc dữ liệu và giải thuật', status: 'inactive', createdAt: Date.now() - 60000 },
-            { id: 6, name: 'Phân tích và thiết kế hệ thống', status: 'inactive', createdAt: Date.now() - 50000 },
-            { id: 7, name: 'Toán cao cấp', status: 'active', createdAt: Date.now() - 40000 },
-            { id: 8, name: 'Tiếng Anh chuyên ngành', status: 'inactive', createdAt: Date.now() - 30000 }
+            { id: 1, userId: currentUserId, name: 'Lập trình C', status: 'active', createdAt: Date.now() - 100000 },
+            { id: 2, userId: currentUserId, name: 'Lập trình Frontend với ReactJS', status: 'inactive', createdAt: Date.now() - 90000 },
+            { id: 3, userId: currentUserId, name: 'Lập trình Backend với Spring boot', status: 'active', createdAt: Date.now() - 80000 },
+            { id: 4, userId: currentUserId, name: 'Lập trình Frontend với VueJS', status: 'inactive', createdAt: Date.now() - 70000 },
+            { id: 5, userId: currentUserId, name: 'Cấu trúc dữ liệu và giải thuật', status: 'inactive', createdAt: Date.now() - 60000 },
+            { id: 6, userId: currentUserId, name: 'Phân tích và thiết kế hệ thống', status: 'inactive', createdAt: Date.now() - 50000 },
+            { id: 7, userId: currentUserId, name: 'Toán cao cấp', status: 'active', createdAt: Date.now() - 40000 },
+            { id: 8, userId: currentUserId, name: 'Tiếng Anh chuyên ngành', status: 'inactive', createdAt: Date.now() - 30000 }
         ];
-        localStorage.setItem('categories', JSON.stringify(categories));
+        allCategories = [...categories];
+        localStorage.setItem('categories', JSON.stringify(allCategories));
     }
+
+    const saveCategories = () => {
+        allCategories = allCategories.filter(c => c.userId !== currentUserId);
+        allCategories.push(...categories);
+        localStorage.setItem('categories', JSON.stringify(allCategories));
+    };
 
     let currentPage = 1;
     const itemsPerPage = 5;
@@ -79,8 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         filtered.sort((a, b) => {
-            if (sort === 'time_desc') return b.createdAt - a.createdAt;
-            if (sort === 'time_asc') return a.createdAt - b.createdAt;
             if (sort === 'name_asc') return a.name.localeCompare(b.name);
             if (sort === 'name_desc') return b.name.localeCompare(a.name);
             return 0;
@@ -205,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (deleteConfirmBtn) {
         deleteConfirmBtn.onclick = () => {
             categories = categories.filter(c => c.id !== currentDeleteId);
-            localStorage.setItem('categories', JSON.stringify(categories));
+            saveCategories();
             
             document.querySelector('#deleteModal .btn-cancel').click();
             showToast('Thành công', 'Xóa môn học thành công');
@@ -241,13 +255,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const statusRadio = document.querySelector('input[name="statusAdd"]:checked');
                 const newCategory = {
                     id: Date.now(),
+                    userId: currentUserId,
                     name: nameValue,
                     status: statusRadio ? statusRadio.value : 'active',
                     createdAt: Date.now()
                 };
                 
                 categories.push(newCategory);
-                localStorage.setItem('categories', JSON.stringify(categories));
+                saveCategories();
                 
                 document.querySelector('#categoryModal .btn-cancel').click(); // Close modal
                 showToast('Thành công', 'Thêm mới môn học thành công');
@@ -281,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     categories[categoryIndex].name = nameValue;
                     categories[categoryIndex].status = statusRadio ? statusRadio.value : 'active';
                     
-                    localStorage.setItem('categories', JSON.stringify(categories));
+                    saveCategories();
                     
                     document.querySelector('#editModal .btn-cancel').click(); // Close modal
                     showToast('Thành công', 'Cập nhật môn học thành công');

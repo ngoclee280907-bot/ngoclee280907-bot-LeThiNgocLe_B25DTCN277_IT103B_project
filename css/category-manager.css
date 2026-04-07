@@ -166,6 +166,8 @@ body {
 .search-box {
     position: relative;
     width: 300px;
+    background-color: white;
+    color: rgba(100, 116, 139, 1);
 }
 
 .search-box input {

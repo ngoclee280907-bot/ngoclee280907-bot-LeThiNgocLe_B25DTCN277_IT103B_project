@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        window.location.replace('./login.html');
+        return;
+    }
+    const currentUserId = currentUser.email;
+
     const toastContainer = document.getElementById('toast-container');
 
     const editBtns = document.querySelectorAll('.edit-btn');
