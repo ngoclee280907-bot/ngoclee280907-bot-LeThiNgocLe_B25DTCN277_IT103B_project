@@ -30,12 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
+    // Chức năng Đăng Xuất (Logout)
     if (confirmLogoutBtn) {
+        // Lắng nghe sự kiện Bấm nút 'Đồng ý' ở Modal Đăng xuất
         confirmLogoutBtn.onclick = () => {
+            // Bước 1: Thu hồi thẻ bài / Xóa trạng thái đăng nhập
             localStorage.removeItem('currentUser');
+            // Tắt Modal bằng cách xóa hash trên thanh URL
             window.location.hash = '#';
+            
             showToast('Thành công', 'Bạn đã đăng xuất thành công. Đang quay lại trang đăng nhập...');
             
+            // Bước 2: Đá văng người dùng về màn hình đăng nhập sau 2 giây
             setTimeout(() => {
                 window.location.href = './login.html';
             }, 2000);
