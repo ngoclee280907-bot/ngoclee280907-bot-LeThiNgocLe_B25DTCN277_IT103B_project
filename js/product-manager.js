@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Bước 1: Rào chắn - Chặn người không có tài khoản vào trang Quản lý bài học
+    // Bước 1: Kiểm tra quyền truy cập. Chuyển hướng về trang login nếu chưa đăng nhập.
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
         window.location.replace('./login.html');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const toastContainer = document.getElementById('toast-container');
 
-    // [Giao diện] Ép hiển thị Modal Sửa thông qua đường dẫn Hash
+    // Gán sự kiện hiển thị Modal Sửa qua mã hash URL.
     const editBtns = document.querySelectorAll('.edit-btn');
     editBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // [Giao diện] Ép hiển thị Modal Xóa thông qua đường dẫn Hash
+    // Gán sự kiện hiển thị Modal Xóa qua mã hash URL.
     const deleteBtns = document.querySelectorAll('.delete-btn');
     deleteBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // [Giao diện] Đóng tất cả Modal bằng cách trả Hash về Rỗng '#'
+    // Xử lý đóng tất cả Modal bằng cách reset mã hash trên URL.
     const cancelBtns = document.querySelectorAll('.btn-cancel-modal, .close-btn, .modal-backdrop-close');
     cancelBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Hàm phụ trợ: Hiển thị hộp thoại nhỏ góc màn hình (Toast)
+    // Hàm hiển thị thông báo toast thành công ở góc màn hình.
     function showToast(title, message) {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Bước 2: Hàm chung kiểm tra Vvalidate Form không được để Rỗng
+    // Bước 2: Hàm kiểm tra tính hợp lệ của Form (Validation).
     const validateForm = (modalId) => {
         const modal = document.querySelector(modalId);
         const inputs = modal.querySelectorAll('input, select');
@@ -77,17 +77,17 @@ document.addEventListener('DOMContentLoaded', () => {
         inputs.forEach(input => {
             const formGroup = input.closest('.form-group');
             if (input.value.trim() === '') {
-                formGroup.classList.add('error'); // Gắn viền đỏ
+                formGroup.classList.add('error'); // Thêm class báo lỗi.
                 isValid = false;
             } else {
-                formGroup.classList.remove('error'); // Xóa viền đỏ
+                formGroup.classList.remove('error'); // Loại bỏ class báo lỗi.
             }
         });
 
         return isValid;
     };
 
-    // Bước 3: Chức năng Thêm mới Bài học
+    // Bước 3: Xử lý chức năng thêm mới bài học.
     const addBtn = document.querySelector('#lessonModal .btn-submit-modal');
     if (addBtn) {
         addBtn.addEventListener('click', () => {
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Bước 4: Chức năng Cập nhật sửa Bài Học
+    // Bước 4: Xử lý chức năng cập nhật thông tin bài học.
     const saveBtn = document.querySelector('#editLessonModal .btn-submit-modal');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Bước 5: Chức năng Xóa Bài học
+    // Bước 5: Xử lý chức năng xóa bài học.
     const deleteConfirmBtn = document.querySelector('.btn-danger-confirm');
     if (deleteConfirmBtn) {
         deleteConfirmBtn.addEventListener('click', () => {
@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mẹo UX: Tự xóa Lỗi Viền Đỏ khi người dùng đang nhập chữ vào
+    // Xử lý trải nghiệm người dùng: Xóa lỗi đỏ ngay khi bắt đầu nhập liệu.
     document.querySelectorAll('.form-group input, .form-group select').forEach(element => {
         element.addEventListener('input', () => {
             element.closest('.form-group').classList.remove('error');

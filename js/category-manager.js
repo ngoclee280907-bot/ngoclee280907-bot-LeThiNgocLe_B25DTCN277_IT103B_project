@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Bước 1: Rào chắn - Đâm thủng ai chưa đăng nhập mà dám mò vào
+    // Bước 1: Kiểm tra quyền truy cập. Nếu chưa đăng nhập, chuyển hướng về trang login.
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
         window.location.replace('./login.html');
@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteConfirmBtn = document.querySelector('.btn-delete-confirm');
     const deleteCategoryNameSpan = document.getElementById('deleteCategoryName');
     
-    // Nơi chứa dữ liệu: Mảng gốc (Tất cả user)
+    // Lấy toàn bộ danh mục từ localStorage hoặc khởi tạo mảng rỗng nếu chưa có dữ liệu.
     let allCategories = JSON.parse(localStorage.getItem('categories')) || [];
-    // Mảng con: Lọc dành riêng cho người user hiện tại
+    // Lọc danh sách danh mục thuộc về người dùng hiện tại.
     let categories = allCategories.filter(c => c.userId === currentUserId);
     
-    // Đổ tí dữ liệu mồi nếu mới tinh
+    // Khởi tạo dữ liệu mẫu nếu hệ thống chưa có dữ liệu.
     if (allCategories.length === 0) {
         categories = [
             { id: 1, userId: currentUserId, name: 'Lập trình C', status: 'active', createdAt: Date.now() - 100000 },
@@ -46,12 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hàm Phụ: Lưu đè mảng mỗi khi có thay đổi (Thêm/Sửa/Xóa)
     const saveCategories = () => {
-        allCategories = allCategories.filter(c => c.userId !== currentUserId); // Bỏ mấy phần tử cũ đi
-        allCategories.push(...categories); // Nhét mảng mới cập nhật vào
-        localStorage.setItem('categories', JSON.stringify(allCategories)); // Lưu xuống két
+        allCategories = allCategories.filter(c => c.userId !== currentUserId); // Loại bỏ các bản ghi cũ của user này khỏi mảng tổng.
+        allCategories.push(...categories); // Thêm các bản ghi đã cập nhật vào mảng tổng.
+        localStorage.setItem('categories', JSON.stringify(allCategories)); // Lưu mảng tổng vào localStorage.
     };
 
-    // Các biến phụ lưu Trạng Thái hiện tại (Ai đang sửa, ai đang bị xóa, trang số mấy)
+    // Các biến quản lý trạng thái: trang hiện tại, số lượng bản ghi mỗi trang, ID đang xóa/sửa.
     let currentPage = 1;
     const itemsPerPage = 5;
     let currentDeleteId = null;
@@ -96,14 +96,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const filter = filterSelect.value;
         const sort = sortSelect.value;
 
-        // Bỏ mảng vô cái Xào lọc dữ liệu (Bỏ ai không giống Search Bar)
+        // Lọc mảng categories theo từ khóa tìm kiếm và trạng thái hoạt động.
         let filtered = categories.filter(c => {
             const matchName = c.name.toLowerCase().includes(query);
             const matchStatus = filter === '' || c.status === filter;
             return matchName && matchStatus;
         });
 
-        // Hàm Sắp xếp lại chữ cái
+        // Sắp xếp danh sách dựa trên tên (tăng dần/giảm dần).
         filtered.sort((a, b) => {
             if (sort === 'name_asc') return a.name.localeCompare(b.name);
             if (sort === 'name_desc') return b.name.localeCompare(a.name);
@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // [Phần Phân Trang]
-        // Bóc tách Số trang (Tổng = length / 5)
+        // Tính toán tổng số trang dựa trên số bản ghi đã lọc.
         const totalPages = Math.ceil(filtered.length / itemsPerPage) || 1;
         if (currentPage > totalPages) currentPage = totalPages;
 
@@ -119,10 +119,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const startIndex = (currentPage - 1) * itemsPerPage;
         const endIndex = startIndex + itemsPerPage;
         
-        // Thái mảng bằng .slice để lấy 1 khúc đi In (Render)
+        // Sử dụng slice để lấy tập dữ liệu con tương ứng với trang hiện tại.
         const paginated = filtered.slice(startIndex, endIndex);
 
-        // Làm sạch bàn
+        // Xóa nội dung bảng hiện tại trước khi render lại dữ liệu mới.
         categoryTableBody.innerHTML = '';
         if (paginated.length === 0) {
             categoryTableBody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 20px;">Không tìm thấy môn học nào</td></tr>`;
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Gọi Hàm Sinh vẽ Nút Trang
         renderPagination(totalPages);
         
-        // Gọi Hàm Khởi tạo Bắt Sự kiện Cho 2 Nút (Sửa, Xóa) vừa được đắp vào web
+        // Gán lại sự kiện Sửa/Xóa cho các dòng dữ liệu mới vừa render.
         bindRowEvents();
     };
 
@@ -199,30 +199,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Xử lý Gán Sự Kiện Xóa, Sửa khi bấm trên Dòng Dữ liệu
     const bindRowEvents = () => {
-        // [Xác định ai bị Xóa]
+        // Gán sự kiện cho nút Xóa.
         const deleteBtns = document.querySelectorAll('.btn-delete-row');
         deleteBtns.forEach(btn => {
             btn.onclick = (e) => {
-                // Nhặt lấy cái Id từ Data HTML gài sẵn. Set vào biến cắm cờ
+                // Lấy ID từ thuộc tính data-id và cập nhật vào biến currentDeleteId.
                 currentDeleteId = parseInt(btn.getAttribute('data-id'));
                 deleteCategoryNameSpan.textContent = btn.getAttribute('data-name');
             };
         });
 
-        // [Xác định ai bị Sửa, Đổ dữ liệu Data lên Form]
+        // Gán sự kiện cho nút Sửa và đổ dữ liệu lên form Modal.
         const editBtns = document.querySelectorAll('.btn-edit-row');
         editBtns.forEach(btn => {
             btn.onclick = () => {
                 // Nhặt cái ID 
                 currentEditId = parseInt(btn.getAttribute('data-id'));
                 
-                // Mở mảng tìm thằng đang mang ID đó
+                // Tìm danh mục cụ thể theo ID trong mảng categories.
                 const categoryToEdit = categories.find(c => c.id === currentEditId);
                 if (categoryToEdit) {
-                    // Đổ "Tên" cũ vào ô input của Modal Mới
+                    // Điền tên danh mục hiện tại vào ô input.
                     editCategoryNameInput.value = categoryToEdit.name;
                     
-                    // Tự check trạng thái Cũ
+                    // Cập nhật trạng thái (radio button) tương ứng.
                     const statusRadios = document.querySelectorAll('input[name="statusEdit"]');
                     statusRadios.forEach(radio => {
                         radio.checked = (radio.value === categoryToEdit.status);
@@ -251,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============== CHỨC NĂNG XÓA CHÍNH THỨC ==============
     if (deleteConfirmBtn) {
         deleteConfirmBtn.onclick = () => {
-            // Lệnh Lọc gọt: Bẻ gãy loại bỏ phần tử cũ rích mang dòng id bị Cắm cờ
+            // Loại bỏ danh mục có ID tương ứng ra khỏi mảng dữ liệu.
             categories = categories.filter(c => c.id !== currentDeleteId);
             saveCategories(); // Lưu đè cục mới
             
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formGroup = categoryNameInput.closest('.form-group');
             const errorMessage = formGroup.querySelector('.error-message');
             
-            // Validate Kiểm tra: Trống ko -> Trùng Ko? 
+            // Kiểm tra tính hợp lệ của dữ liệu (không để trống, không được trùng tên).
             if (nameValue === '') {
                 errorMessage.textContent = 'Tên môn học không được để trống';
                 formGroup.classList.add('field-error');
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 formGroup.classList.remove('field-error');
                 
-                // Mọi thứ hoàn hảo -> Tạo Object
+                // Nếu dữ liệu hợp lệ, tạo đối tượng danh mục mới.
                 const statusRadio = document.querySelector('input[name="statusAdd"]:checked');
                 const newCategory = {
                     id: Date.now(),
@@ -298,16 +298,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     createdAt: Date.now()
                 };
                 
-                // Nhét Data mới -> Mảng Tổng -> Nhét vô Két Sắt
+                // Thêm đối tượng mới vào mảng và lưu lại vào localStorage.
                 categories.push(newCategory);
                 saveCategories();
                 
-                document.querySelector('#categoryModal .btn-cancel').click(); // Đóng Modal
-                showToast('Thành công', 'Thêm mới môn học thành công'); // Khen
-                categoryNameInput.value = ''; // Làm sạch
+                document.querySelector('#categoryModal .btn-cancel').click(); // Đóng modal.
+                showToast('Thành công', 'Thêm mới môn học thành công'); // Thông báo thành công.
+                categoryNameInput.value = ''; // Reset input.
                 
                 currentPage = 1;
-                renderCategories(); // Quét vẽ lại bàn ăn Bảng HTML mới
+                renderCategories(); // Cập nhật lại giao diện bảng.
             }
         };
     }
@@ -331,15 +331,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 const statusRadio = document.querySelector('input[name="statusEdit"]:checked');
                 
-                // Móc ID tìm ra VỊ TRÍ (Index) của thằng dữ liệu đang bị sửa
+                // Tìm vị trí của phần tử cần cập nhật trong mảng.
                 const categoryIndex = categories.findIndex(c => c.id === currentEditId);
                 
                 if (categoryIndex !== -1) {
-                    // Đè thuộc Tính Mới Lên thẳng cái Bản Phôi Tại vị trí mảng đó
+                    // Cập nhật các thuộc tính mới vào phần tử tại vị trí đã tìm thấy.
                     categories[categoryIndex].name = nameValue;
                     categories[categoryIndex].status = statusRadio ? statusRadio.value : 'active';
                     
-                    saveCategories(); // Lưu lại đè két sắt
+                    saveCategories(); // Lưu lại dữ liệu sau khi chỉnh sửa.
                     
                     document.querySelector('#editModal .btn-cancel').click(); // Đóng cúp modal
                     showToast('Thành công', 'Cập nhật môn học thành công');

@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Bước 1: Rào chắn Khóa trang
-    // Đoạn này kiểm tra nếu thấy đã Đăng Nhập Rồi thì đá thẳng vô Dashboard, không cho phép lãng vãng ở Login
+    // Bước 1: Kiểm tra trạng thái đăng nhập.
+    // Nếu đã đăng nhập, chuyển hướng ngay tới trang Dashboard để tránh đăng nhập lại.
     if (localStorage.getItem('currentUser')) {
         window.location.replace('./dashboard.html');
         return;
     }
 
-    // Bước 2: Bắt element
+    // Bước 2: Truy vấn các phần tử DOM cần thiết.
     const loginForm = document.getElementById('loginForm');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         errorSpan.textContent = '';
     };
 
-    // Bước 3: Bắt sự kiện Bấm Login
+    // Bước 3: Xử lý sự kiện submit form đăng nhập.
     loginForm.addEventListener('submit', (e) => {
         e.preventDefault(); // Chặn tải lại form
         let isValid = true;
@@ -46,22 +46,22 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('password');
         }
 
-        // Bước 4: So khớp với dữ liệu gốc ở LocalStorage
+        // Bước 4: Xác thực thông tin với dữ liệu lưu trong localStorage.
         if (isValid) {
             const users = JSON.parse(localStorage.getItem('users')) || [];
             
-            // Xài hàm .find() tìm ra ông Tướng nào có Email và Pass Y chang như những gì vừa gõ
+            // Sử dụng hàm find() để tìm người dùng có email và mật khẩu trùng khớp.
             const user = users.find(u => u.email === emailInput.value.trim() && u.password === passwordInput.value);
 
-            // Bước 5: Nếu tìm thấy thì chứng tỏ gõ đúng
+            // Bước 5: Xử lý khi đăng nhập thành công.
             if (user) {
-                // Tạo thẻ Bài Session `currentUser` để sau này đi lại vòng vòng trang quản lý
+                // Lưu thông tin người dùng hiện tại vào localStorage để duy trì phiên làm việc.
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 
-                // Đá vô trang Quản Lý
+                // Chuyển hướng sang trang Dashboard.
                 window.location.replace('./dashboard.html');
             } else {
-                // Nếu tìm không thấy -> báo Tài khoản sai.
+                // Hiển thị thông báo lỗi nếu tài khoản hoặc mật khẩu không đúng.
                 showError('email', 'Email hoặc mật khẩu không chính xác');
                 showError('password', '');
             }

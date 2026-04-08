@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Bước 1: Khai báo và móc nối với các thẻ HTML qua ID
+    // Bước 1: Truy vấn các phần tử DOM cần thiết qua ID.
     const registerForm = document.getElementById('registerForm');
     const lastNameInput = document.getElementById('lastName');
     const firstNameInput = document.getElementById('firstName');
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const agreeTermsCheckbox = document.getElementById('agreeTerms');
     const toastContainer = document.getElementById('toast-container');
 
-    // Hàm phụ trợ: Hiển thị lỗi thiết kế UI
+    // Hàm hiển thị thông báo lỗi trên giao diện người dùng.
     const showError = (inputId, message) => {
         const input = document.getElementById(inputId);
         let errorSpan = document.getElementById(inputId + 'Error');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorSpan) errorSpan.textContent = message;
     };
 
-    // Hàm phụ trợ: Xóa trạng thái lỗi
+    // Hàm xóa trạng thái lỗi (loại bỏ class error và clear text).
     const clearError = (inputId) => {
         const input = document.getElementById(inputId);
         let errorSpan = document.getElementById(inputId + 'Error');
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorSpan) errorSpan.textContent = '';
     };
 
-    // Hàm phụ trợ: Vẽ giao diện bảng thông báo góc (Toast)
+    // Hàm hiển thị thông báo toast thành công ở góc màn hình.
     const showToast = (title, message) => {
         const toast = document.createElement('div');
         toast.className = 'toast';
@@ -49,15 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         toastContainer.appendChild(toast);
     };
 
-    // Bước 2: Bắt sự kiện khi người dùng bấm Submit Đăng ký
+    // Bước 2: Xử lý sự kiện submit của form đăng ký.
     registerForm.addEventListener('submit', (e) => {
-        // Chặn không tải lại trang để giữ được dữ liệu JS
+        // Ngăn trình duyệt reload trang web.
         e.preventDefault();
         
-        // Cờ đánh dấu tình trạng hợp lệ 
-        let isValid = true;
+        // Biến cờ (flag) để theo dõi trạng thái hợp lệ của toàn bộ form.
 
-        // Bước 3: Lấy dữ liệu chữ và Kiểm tra rỗng (Validate)
+        // Bước 3: Kiểm tra tính hợp lệ của dữ liệu đầu vào (Validation).
         if (lastNameInput.value.trim() === '') {
             showError('lastName', 'Bạn vui lòng nhập họ và tên đệm');
             isValid = false;
@@ -92,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('password');
         }
 
-        // Kiểm tra khớp 2 mật khẩu
+        // Kiểm tra tính trùng khớp của mật khẩu xác nhận.
         if (rePasswordInput.value === '') {
             showError('rePassword', 'Bạn vui lòng nhập lại mật khẩu');
             isValid = false;
@@ -103,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('rePassword');
         }
 
-        // Bắt buộc tích Đồng ý
+        // Kiểm tra việc chấp thuận các điều khoản dịch vụ.
         if (!agreeTermsCheckbox.checked) {
             showError('agreeTerms', 'Bạn phải đồng ý với chính sách và điều khoản');
             isValid = false;
@@ -111,43 +110,43 @@ document.addEventListener('DOMContentLoaded', () => {
             clearError('agreeTerms');
         }
 
-        // Bước 4: Lưu dữ liệu khi Mọi thứ Hợp lệ (isValid = true)
+        // Bước 4: Thực hiện lưu trữ dữ liệu nếu thông tin hợp lệ.
         if (isValid) {
-            // Đóng gói thông tin vừa thu thập thành 1 Object
+            // Khởi tạo đối tượng chứa thông tin người dùng mới.
             const newUser = {
                 fullname: `${lastNameInput.value.trim()} ${firstNameInput.value.trim()}`.trim(),
                 email: emailInput.value.trim(),
                 password: passwordInput.value
             };
 
-            // Lôi mảng Users từ LocalStorage lên, nếu rỗng thì tạo mảng trống []
+            // Đọc danh sách người dùng hiện có từ localStorage (hoặc khởi tạo mảng rỗng).
             const users = JSON.parse(localStorage.getItem('users')) || [];
             
-            // Dò xem mảng Users có người nào mang email kia hay chưa
+            // Kiểm tra sự tồn tại của email trong danh sách người dùng.
             if (users.find(u => u.email === newUser.email)) {
                 showError('email', 'Email này đã được đăng ký');
                 return;
             }
 
-            // Đẩy Obj của mình vào mảng tổng
+            // Thêm người dùng mới vào danh sách.
             users.push(newUser);
-            // Ép thành string lưu lại xuống LocalStorage
+            // Chuyển danh sách thành mảng JSON và lưu vĩnh viễn vào localStorage.
             localStorage.setItem('users', JSON.stringify(users));
 
-            // Dọn dẹp thẻ đăng nhập nháp cũ nêútồn tại
+            // Xóa thông tin phiên đăng nhập cũ (nếu có).
             localStorage.removeItem('currentUser');
 
             // Bật Toast báo Thành công
             showToast('Thành công', 'Đăng ký tài khoản thành công! Đang chuyển hướng...');
             
-            // Bước 5: Hẹn sau 2 giây thì Đá qua Trang Login
+            // Bước 5: Chuyển hướng người dùng về trang đăng nhập sau một khoảng thời gian ngắn.
             setTimeout(() => {
                 window.location.href = './login.html';
             }, 2000);
         }
     });
 
-    // Mẹo UX: Đang gõ chữ vào ô nào thì tự động Xóa trạng thái màu Đỏ Báo lỗi
+    // Xử lý trải nghiệm người dùng: Xóa thông báo lỗi ngay khi bắt đầu nhập liệu lại.
     [lastNameInput, firstNameInput, emailInput, passwordInput, rePasswordInput].forEach(input => {
         input.addEventListener('input', () => clearError(input.id));
     });
